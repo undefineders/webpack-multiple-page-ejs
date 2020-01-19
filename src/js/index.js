@@ -1,8 +1,12 @@
+import '../js/common.js'
 import '../style/index.less'
-import img from '../img/icon.png'
-import mp4 from '../medias/video.mp4'
-import json from '../json/json.json'
+import img from '../assets/img/icon.png'
+import mp4 from '../assets/medias/video.mp4'
+import json from '../assets/json/json.json'
+
+import {hello,hello2} from '../assets/js/es6.js'
 
 console.log(img)
 console.log(mp4)
 console.log(json)
+console.log(hello,hello2)

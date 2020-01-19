@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const config = require('./config');
 
 module.exports = [
     {
@@ -26,12 +27,14 @@ module.exports = [
     {
         test: /\.js$/, //js文件加载器
         exclude: /node_modules/,
-        use: {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-env']
-            }
-        }
+        use: [
+			{
+				loader: 'babel-loader',
+				options: {
+					presets: ['@babel/preset-env']
+				}
+			}
+		]
     },
     {
         test: /\.html$/,
@@ -49,7 +52,7 @@ module.exports = [
         options: {
             limit: 8192,
             esModule: false, // 这里设置为false
-            name: 'img/[name].[hash:8].[ext]'
+            name: config.path.img+'/[name].[hash:8].[ext]'
         }
     },
     {
@@ -58,7 +61,7 @@ module.exports = [
         options: {
             limit: 8192,
             esModule: false, // 这里设置为false
-            name: 'media/[name].[hash:8].[ext]'
+            name: config.path.other+'/[name].[hash:8].[ext]'
         }
     },
     {
@@ -67,7 +70,7 @@ module.exports = [
         options: {
             limit: 8192,
             esModule: false, // 这里设置为false
-            name: 'fonts/[name].[hash:8].[ext]'
+            name: config.path.fonts+'[name].[hash:8].[ext]'
         }
     }
 ]
