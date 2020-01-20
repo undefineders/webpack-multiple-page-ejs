@@ -1,0 +1,6 @@
+<script type="text/javascript">
+<!-- 底部默认引入当前页面的js -->
+<% for(var k in htmlWebpackPlugin.files.chunks) { %>
+    <%= compilation.assets[htmlWebpackPlugin.files.chunks[k].entry.substr(htmlWebpackPlugin.files.publicPath.length)].source() %>
+<% } %>
+</script>

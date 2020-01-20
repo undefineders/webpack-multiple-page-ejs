@@ -1,0 +1,7 @@
+<style>
+    <% for(var k in htmlWebpackPlugin.files.chunks) { %>
+        <% for(var c in htmlWebpackPlugin.files.chunks[k].css) { %>
+            <%= compilation.assets[htmlWebpackPlugin.files.chunks[k].css[c].substr(htmlWebpackPlugin.files.publicPath.length)].source()%>
+        <% } %>
+    <% } %>
+</style>

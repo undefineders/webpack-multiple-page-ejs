@@ -1,6 +1,7 @@
 <ul class="nav">
-	<li><a <% if(cur == 0){ %> class="cur" <% }%> href="./index.html">index</a></li>
-	<li><a <% if(cur == 1){ %> class="cur" <% }%> href="./home.html">home</a></li>
+	<li><a <% if(cur == 0){ %> class="cur" <% }else{%> href="./index.html" <%}%>>index</a></li>
+	<li><a <% if(cur == 1){ %> class="cur" <% }else{%> href="./home.html" <%}%>>home</a></li>
+	<li><a <% if(cur == 2){ %> class="cur" <% }else{%> href="./test.html" <%}%>>test</a></li>
 </ul>
 <% if(cur == 1){ %>
 我只有在home页面上出现

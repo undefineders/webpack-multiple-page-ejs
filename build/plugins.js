@@ -7,24 +7,25 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const {
 	CleanWebpackPlugin
 } = require('clean-webpack-plugin');
-const config = require('./config');
+var config = require('./config');
 //js 压缩
 const uglify = require('uglifyjs-webpack-plugin');
 //node 文件操作模块
 const fs = require('fs');
 const path = require('path');
-const entryFiles = fs.readdirSync(path.resolve(__dirname, '../src'));
-const rFiles = entryFiles.filter(v => v.endsWith('.ejs'));
-const plugins = [];
-
+var entryFiles = fs.readdirSync(path.resolve(__dirname, '../src/script'));
+var rFiles = entryFiles.filter(v => v.endsWith('.js'));
+var plugins = [];
 rFiles.forEach(v => {
 	v = v.substring(0, v.lastIndexOf('.'))
 	plugins.push(
 		new HtmlWebpackPlugin({
 			filename: path.resolve(__dirname, '../dist', `${v}.html`),
 			template: path.resolve(__dirname, '../src', `${v}.ejs`),
-			inject: true,
-			chunks: ['common', v],
+            //是否插入生成好的chunks body | head | true | false
+			inject: false,
+            //指定该html引入的chunks 
+			chunks: [v],
 			//favicon: './src/assets/img/favicon.ico',
 			//压缩配置
 			minify: {
@@ -39,7 +40,7 @@ rFiles.forEach(v => {
 	)
 })
 
-const otherPlugins = [
+var otherPlugins = [
 	new MiniCssExtractPlugin({
 		filename: config.path.css + '/[name].[hash:8].css',
 		chunkFilename: '[id].css',
@@ -55,7 +56,7 @@ const otherPlugins = [
 		canPrint: true
 	}),
 	// new TransfromAssets(),
-	new webpack.HotModuleReplacementPlugin(),
+	// new webpack.HotModuleReplacementPlugin(),
 	new webpack.NamedModulesPlugin(),
 	new CleanWebpackPlugin(),
 	new uglify()

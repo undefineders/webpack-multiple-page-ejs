@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%= require('./common/meta.ejs')({htmlWebpackPlugin}) %>
+		<%= require('./common/meta.ejs')() %>
 		<title>index</title>
+        <%= require('./common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
 	<body>
 		<%= require('./common/header.ejs')({cur:0}) %>
@@ -10,4 +11,6 @@
 		<div class="tt"></div>
 		<%= require('./common/footer.ejs')() %>
 	</body>
+    
+    <%= require('./common/js.ejs')({htmlWebpackPlugin,compilation}) %>
 </html>
