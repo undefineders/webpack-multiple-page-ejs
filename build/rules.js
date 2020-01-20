@@ -25,28 +25,28 @@ module.exports = [
             'less-loader'
         ]
     },
-  //   {
-  //       test: /\.js$/, //js文件加载器
-  //       exclude: /node_modules/,
-  //       use: [
-		// 	{
-		// 		loader: 'babel-loader',
-		// 		options: {
-		// 			presets: ['@babel/preset-env']
-		// 		}
-		// 	}
-		// ]
-  //   },
-    // {
-    //     test: /\.html$/,
-    //     use: [{
-    //         loader: 'html-loader',
-    //         options: {
-    //             interpolate: true,
-    //             minimize: false
-    //         }
-    //     }]
-    // },
+    {
+        test: /\.js$/, //js文件加载器
+        exclude: /node_modules/,
+        use: [
+			{
+				loader: 'babel-loader',
+				options: {
+					presets: ['@babel/preset-env']
+				}
+			}
+		]
+    },
+    {
+        test: /\.html$/,
+        use: [{
+            loader: 'html-loader',
+            options: {
+                interpolate: true,
+                minimize: false
+            }
+        }]
+    },
     {
         test: /\.(png|svg|jpg|gif)$/,
         loader: 'url-loader',
