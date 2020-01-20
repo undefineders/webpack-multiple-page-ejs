@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config build/webpack.config.js --inline --progress --display-modules --colors --display-reason",
-    "dev": "webpack-dev-server --config build/webpack.config.js --inline --progress --display-modules --colors --display-reason"
+    "build": "webpack --mode production --config build/webpack.config.js --progress --display-modules --colors --display-reason",
+    "dev": "webpack-dev-server --mode development --config build/webpack.config.js --inline --progress --display-modules --colors --display-reason"
   },
   "author": "",
   "license": "ISC",
