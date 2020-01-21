@@ -9,33 +9,53 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin');
-//使用node.js 的文件操作模块来获取src文件夹下的文件名称
-var entryFiles = fs.readdirSync(path.resolve(__dirname, './src/pages'));
 var config = require('./config');
-var rFiles = entryFiles.filter(v => v.endsWith('.js'));
 
+// 遍历获取src目录下的启动js模块文件
+var join = require('path').join;
+var rFiles = [];
+function getJsonFiles(jsonPath){
+    function findJsonFile(path){
+        let files = fs.readdirSync(path);
+        files.forEach(function (item, index) {
+            let fPath = join(path,item);
+            let stat = fs.statSync(fPath);
+            if(stat.isDirectory() === true && item !="common") {
+                findJsonFile(fPath);
+            }
+            if (stat.isFile() === true && item.endsWith('.js')) { 
+              rFiles.push(fPath.replace(/\\/g,'/'));
+            }
+        });
+    }
+    findJsonFile(jsonPath);
+}
+getJsonFiles(`./${config.path.entry}`)
 
 var entryList = {}
 rFiles.map((v, k) => {
-	v = v.substring(0, v.lastIndexOf('.'))
-	entryList[v] = `@src/${config.path.init}/${v}.js`
+	v = v.substring(`${config.path.entry}`.length+1, v.lastIndexOf('.'))
+    entryList[v] = `@${config.path.entry}/${v}.js`
 });
 
 module.exports = (env, argv) => {
     process.env.NODE_ENV = argv.mode
     console.log(process.env.NODE_ENV);
     
-    var plugins = [];
+    var htmlPlugins = [];
+    var prodPlugins = [];
+    
     rFiles.forEach(v => {
-    	v = v.substring(0, v.lastIndexOf('.'))
-    	plugins.push(
+    	v = v.substring(`${config.path.entry}`.length+1, v.lastIndexOf('.'))
+    	htmlPlugins.push(
     		new HtmlWebpackPlugin({
-    			filename: path.resolve(__dirname, 'dist', `${v}.html`),
-    			template: path.resolve(__dirname, 'src', `${config.path.init}/${v}.ejs`),
+    			filename: path.resolve(__dirname, `${config.path.out}`, `${v}.html`),
+    			template: path.resolve(__dirname, '', `${config.path.entry}/${v}.ejs`),
                 //是否插入生成好的chunks body | head | true | false
     			inject: process.env.NODE_ENV != 'production',
                 //指定该html引入的chunks 
     			chunks: [v],
+                path:process.env.NODE_ENV == 'production'?`${config.path.out}/`:`./`,
     			//favicon: './src/assets/img/favicon.ico',
     			//压缩配置
     			minify: process.env.NODE_ENV == 'production'?{
@@ -45,21 +65,16 @@ module.exports = (env, argv) => {
     				collapseWhitespace: true,
     				//去除属性引号
     				removeAttributeQuotes: true
-    			}:false
+    			}:{
+                    //去除空格
+                    collapseWhitespace: true,
+                }
     		})
     	)
     })
     
-    var otherPlugins = [
-        new VueLoaderPlugin(),
-    	new MiniCssExtractPlugin({
-    		filename: config.path.css + '/[name].[hash:8].css',
-    		chunkFilename: '[id].css',
-    	})
-    ];
-    
     if(process.env.NODE_ENV == 'production'){
-        otherPlugins.push(
+        prodPlugins.push(
             new optimizeCss({
             	assetNameRegExp: /\.css$/g,
             	cssProcessor: require('cssnano'),
@@ -72,17 +87,15 @@ module.exports = (env, argv) => {
             	canPrint: true
             })
         )
-        otherPlugins.push(new CleanWebpackPlugin())
+        prodPlugins.push(new CleanWebpackPlugin())
     }
-    
-    plugins.splice(entryFiles.length, 0, ...otherPlugins);
     
     return {
         mode: process.env.NODE_ENV,
         entry: entryList,
         output: {
-        	path: path.resolve(__dirname, 'dist/'),
-        	filename: config.path.js + "/[name].[chunkhash:8].js",
+        	path: path.resolve(__dirname, `${config.path.out}/`),
+        	filename: config.path.js + "[name].[chunkhash:8].js",
         	publicPath: ""
         },
         devServer: {
@@ -165,7 +178,7 @@ module.exports = (env, argv) => {
                 options: {
                     limit: 8192,
                     esModule: false, // 这里设置为false
-                    name: config.path.img+'/[name].[hash:8].[ext]'
+                    name: config.path.img+'[name].[hash:8].[ext]'
                 }
             },
             {
@@ -174,7 +187,7 @@ module.exports = (env, argv) => {
                 options: {
                     limit: 8192,
                     esModule: false, // 这里设置为false
-                    name: config.path.other+'/[name].[hash:8].[ext]'
+                    name: config.path.other+'[name].[hash:8].[ext]'
                 }
             },
             {
@@ -183,10 +196,18 @@ module.exports = (env, argv) => {
                 options: {
                     limit: 8192,
                     esModule: false, // 这里设置为false
-                    name: config.path.fonts+'/[name].[hash:8].[ext]'
+                    name: config.path.fonts+'[name].[hash:8].[ext]'
                 }
             }]
         },
-        plugins
+        plugins:[
+            ...htmlPlugins,
+            new VueLoaderPlugin(),
+            new MiniCssExtractPlugin({
+            	filename: config.path.css + '[name].[hash:8].css',
+            	chunkFilename: '[id].css',
+            }),
+            ...prodPlugins
+        ]
     }
 }

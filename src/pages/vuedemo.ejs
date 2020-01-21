@@ -6,14 +6,14 @@
         <%= require('./common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
 	<body>
-		<%= require('./common/header.ejs')({cur:2}) %>
+		<%= require('./common/header.ejs')({cur:2,htmlWebpackPlugin}) %>
             
         <div id="app">
             <div v-for="item in list">{{item}}</div>
             <my-img></my-img>
         </div>
         
-		<%= require('./common/footer.ejs')() %>
+		<%= require('./common/footer.ejs')({htmlWebpackPlugin}) %>
 	</body>
     <%= require('./common/js.ejs')({htmlWebpackPlugin,compilation}) %>
 </html>

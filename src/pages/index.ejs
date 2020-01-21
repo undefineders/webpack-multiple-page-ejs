@@ -6,10 +6,13 @@
         <%= require('./common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
 	<body>
-		<%= require('./common/header.ejs')({cur:0}) %>
+		<%= require('./common/header.ejs')({cur:0,htmlWebpackPlugin}) %>
 		<video style="height:200px" controls src="${require('../assets/medias/video.mp4')}"></video>
 		<div class="tt"></div>
-		<%= require('./common/footer.ejs')() %>
+        
+        <a href="./shop/index.html">链接到二级页面</a>
+        
+		<%= require('./common/footer.ejs')({htmlWebpackPlugin}) %>
 	</body>
     
     <%= require('./common/js.ejs')({htmlWebpackPlugin,compilation}) %>

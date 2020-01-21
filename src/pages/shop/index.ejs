@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<%= require('../common/meta.ejs')() %>
+		<title>index</title>
+        <%= require('../common/style.ejs')({htmlWebpackPlugin,compilation}) %>
+	</head>
+	<body>
+		<%= require('../common/header.ejs')({cur:1,htmlWebpackPlugin}) %>
+	
+        ${htmlWebpackPlugin.options.path}
+        我是二级页面
+        
+		<%= require('../common/footer.ejs')({htmlWebpackPlugin}) %>
+	</body>
+    
+    <%= require('../common/js.ejs')({htmlWebpackPlugin,compilation}) %>
+</html>
