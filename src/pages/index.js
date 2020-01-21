@@ -1,4 +1,3 @@
-import '../assets/script/common.js'
 import '../style/index.less'
 import img from '../assets/img/icon.png'
 import mp4 from '../assets/medias/video.mp4'

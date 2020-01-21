@@ -1,4 +1,3 @@
-import '../assets/script/common.js'
 import Vue from 'vue'
 import MyImg from '../components/vue/MyImg/index.vue';
 

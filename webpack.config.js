@@ -37,7 +37,9 @@ var rFiles = glob.sync(PAGE_PATH + '/**/*.js');
 // }
 // getJsonFiles(`./${config.path.entry}`)
 
-var entryList = {}
+var entryList = {
+	common:`@src/assets/script/common.js`
+}
 var jsFiles = []
 rFiles.map((v, k) => {
 	var path = v.substring(v.lastIndexOf(`${config.path.entry}`)+`${config.path.entry}`.length+1, v.lastIndexOf('.'))
@@ -69,7 +71,7 @@ module.exports = (env, argv) => {
                 //是否插入生成好的chunks body | head | true | false
     			inject: process.env.NODE_ENV != 'production',
                 //指定该html引入的chunks 
-    			chunks: [`${item.filename}`],
+    			chunks: ['common',`${item.filename}`],
     			//favicon: './src/assets/img/favicon.ico',
     			//压缩配置
     			minify: process.env.NODE_ENV == 'production'?{

@@ -1,4 +1,3 @@
-import '../assets/script/common.js'
 import '../style/home.less'
 import Test from '../components/ejs/test/index.js'
 
