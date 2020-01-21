@@ -5,18 +5,20 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const optimizeCss = require('optimize-css-assets-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin');
 //使用node.js 的文件操作模块来获取src文件夹下的文件名称
-var entryFiles = fs.readdirSync(path.resolve(__dirname, './src'));
+var entryFiles = fs.readdirSync(path.resolve(__dirname, './src/pages'));
 var config = require('./config');
 var rFiles = entryFiles.filter(v => v.endsWith('.js'));
+
 
 var entryList = {}
 rFiles.map((v, k) => {
 	v = v.substring(0, v.lastIndexOf('.'))
-	entryList[v] = `@src/${v}.js`
+	entryList[v] = `@src/${config.path.init}/${v}.js`
 });
 
 module.exports = (env, argv) => {
@@ -29,7 +31,7 @@ module.exports = (env, argv) => {
     	plugins.push(
     		new HtmlWebpackPlugin({
     			filename: path.resolve(__dirname, 'dist', `${v}.html`),
-    			template: path.resolve(__dirname, 'src', `tpl/${v}.ejs`),
+    			template: path.resolve(__dirname, 'src', `${config.path.init}/${v}.ejs`),
                 //是否插入生成好的chunks body | head | true | false
     			inject: process.env.NODE_ENV != 'production',
                 //指定该html引入的chunks 
@@ -49,6 +51,7 @@ module.exports = (env, argv) => {
     })
     
     var otherPlugins = [
+        new VueLoaderPlugin(),
     	new MiniCssExtractPlugin({
     		filename: config.path.css + '/[name].[hash:8].css',
     		chunkFilename: '[id].css',
@@ -100,9 +103,11 @@ module.exports = (env, argv) => {
         	quiet: true
         },
         resolve: {
+            //重命名功能
         	alias: {
         		'@': path.resolve(__dirname, '.'),
-        		'@src': path.resolve(__dirname, '.', 'src')
+        		'@src': path.resolve(__dirname, '.', 'src'),
+                'vue': 'vue/dist/vue.js'
         	}
         },
         module: {
@@ -112,8 +117,12 @@ module.exports = (env, argv) => {
                     'ejs-loader'
                 ],
             },{
+                test: /\.vue$/,
+                use: ['vue-loader']
+            },{
                 test: /\.(c|le)ss$/,
                 use: [
+                    'vue-style-loader',
                     'style-loader',
                     MiniCssExtractPlugin.loader,
                     'css-loader',

@@ -1,6 +1,7 @@
 module.exports = {
     port:9527,
     path:{
+        init:'pages',
     	css:'.',
     	img:'.',
     	js:'.',

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<%= require('./common/meta.ejs')({htmlWebpackPlugin}) %>
+		<title>ejsdemo</title>
+        <%= require('./common/style.ejs')({htmlWebpackPlugin,compilation}) %>
+	</head>
+	<body>
+		<%= require('./common/header.ejs')({cur:1}) %>
+            
+        页面直接引入：
+        <%= require('../components/ejs/test/index.ejs')({list:[1,2,3]}) %>
+            
+        通过脚本引入
+        <div id="test"></div>
+        
+		<%= require('./common/footer.ejs')() %>
+	</body>
+    <%= require('./common/js.ejs')({htmlWebpackPlugin,compilation}) %>
+</html>
