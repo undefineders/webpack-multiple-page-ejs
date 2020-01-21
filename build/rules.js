@@ -2,6 +2,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 var config = require('./config');
 
+
+//loader的执行顺序是从右向左的
 module.exports = [
     {
         test: /\.ejs/,
@@ -27,7 +29,7 @@ module.exports = [
     },
     {
         test: /\.js$/, //js文件加载器
-        exclude: /node_modules/,
+        exclude: path.resolve(__dirname,'node_modules'),
         use: [
 			{
 				loader: 'babel-loader',
