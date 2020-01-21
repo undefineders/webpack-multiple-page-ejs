@@ -1,6 +1,5 @@
 module.exports = {
     port:9527,
-    mode:'',
     path:{
     	css:'.',
     	img:'.',

@@ -2,10 +2,10 @@
   "name": "webpack_ejs_multiple",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "build": "webpack --config build/mode.prod.js --progress --display-modules --colors --display-reason",
-    "dev": "webpack-dev-server --config build/mode.dev.js --inline --progress --display-modules --colors --display-reason"
+    "build": "webpack --mode=production --progress --display-modules --colors --display-reason",
+    "dev": "webpack-dev-server --mode=development --inline --progress --display-modules --colors --display-reason --watch=true"
   },
   "author": "",
   "license": "ISC",
@@ -30,8 +30,7 @@
     "url-loader": "^3.0.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1",
-    "webpack-merge": "^4.2.2"
+    "webpack-dev-server": "^3.10.1"
   },
   "browserslist": [
     "> 1%",
