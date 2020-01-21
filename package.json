@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --mode=production --progress --display-modules --colors --display-reason",
-    "dev": "webpack-dev-server --mode=development --inline --progress --display-modules --colors --display-reason --watch=true"
+    "dev": "webpack-dev-server --mode=development --progress --display-modules --colors --display-reason --watch=true"
   },
   "author": "",
   "license": "ISC",
