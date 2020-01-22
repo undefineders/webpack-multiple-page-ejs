@@ -2,6 +2,7 @@
 const fs = require('fs');
 //node 路径模块
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const optimizeCss = require('optimize-css-assets-webpack-plugin');
@@ -51,16 +52,12 @@ rFiles.map((v, k) => {
 console.log(entryList)
 console.log(jsFiles)
 
-if (module.hot) {
-	console.log('hot')
-  module.hot.accept('*');
-}
-
 module.exports = (env, argv) => {
     process.env.NODE_ENV = argv.mode
     console.log(process.env.NODE_ENV);
     
     var htmlPlugins = [];
+    var devPlugins = [];
     var prodPlugins = [];
     
     jsFiles.forEach(item => {
@@ -105,33 +102,28 @@ module.exports = (env, argv) => {
         )
         prodPlugins.push(new CleanWebpackPlugin())
     }
+    // if(process.env.NODE_ENV == 'development'){
+    //     devPlugins.push(new webpack.NamedModulesPlugin())//在热加载时直接返回更新文件名，而不是文件的id
+    //     devPlugins.push(new webpack.HotModuleReplacementPlugin())//热替换插件
+    // }
     
     return {
         mode: process.env.NODE_ENV,
         entry: entryList,
         output: {
         	path: path.resolve(__dirname, `${config.path.out}/`),
-        	filename: config.path.js+"/[name].[chunkhash:8].js",
+        	filename: config.path.js+(process.env.NODE_ENV == 'production'?"/[name].[chunkhash:8].js":"/[name].js"),
         	publicPath: ""
         },
         devServer: {
-        	inline: true,
         	open: true,
 			// hot:true,
-        	historyApiFallback: true,
         	port: config.port,
-            //配置是否启用 gzip 压缩。boolean 为类型，默认为 false
-        	compress: process.env.NODE_ENV == 'production',
-            // 将错误显示在html之上
-        	overlay: {
-        		errors: true,
-        		warnings: false
-        	},
-            // 启用quet后，除了初始启动信息外的任何内容都不会被打印到控制台。
-            // useage via the CLI : webpack-dev-server --quiet
-        	quiet: true
+            publicPath: ''
         },
+        watch: process.env.NODE_ENV == 'development',
         resolve: {
+            extensions: ['.js', '.ejs', '.vue', '.json'],
             //重命名功能
         	alias: {
         		'@': path.resolve(__dirname, '.'),
@@ -194,7 +186,7 @@ module.exports = (env, argv) => {
                 options: {
                     limit: 8192,
                     esModule: false, // 这里设置为false
-                    name: config.path.img+'/[name].[hash:8].[ext]'
+                    name: config.path.img+(process.env.NODE_ENV == 'production'?"/[name].[hash:8].[ext]":"/[name].[ext]")
                 }
             },
             {
@@ -203,7 +195,7 @@ module.exports = (env, argv) => {
                 options: {
                     limit: 8192,
                     esModule: false, // 这里设置为false
-                    name: config.path.other+'/[name].[hash:8].[ext]'
+                    name: config.path.other+(process.env.NODE_ENV == 'production'?"/[name].[hash:8].[ext]":"/[name].[ext]")
                 }
             },
             {
@@ -212,7 +204,7 @@ module.exports = (env, argv) => {
                 options: {
                     limit: 8192,
                     esModule: false, // 这里设置为false
-                    name: config.path.fonts+'/[name].[hash:8].[ext]'
+                    name: config.path.fonts+(process.env.NODE_ENV == 'production'?"/[name].[hash:8].[ext]":"/[name].[ext]")
                 }
             }]
         },
@@ -220,11 +212,11 @@ module.exports = (env, argv) => {
             ...htmlPlugins,
             new VueLoaderPlugin(),
             new MiniCssExtractPlugin({
-            	filename: config.path.css+'/[name].[hash:8].css',
+            	filename: config.path.css+(process.env.NODE_ENV == 'production'?"/[name].[hash:8].css":"/[name].css"),
             	chunkFilename: '[id].css',
             }),
-            ...prodPlugins,
-			// new webpack.HotModuleReplacementPlugin()
+            ...devPlugins,
+            ...prodPlugins
         ]
     }
 }

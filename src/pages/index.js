@@ -1,4 +1,4 @@
-import '../style/index.less'
+import '../assets/style/index.less'
 import img from '../assets/img/icon.png'
 import mp4 from '../assets/medias/video.mp4'
 import json from '../assets/json/json.json'

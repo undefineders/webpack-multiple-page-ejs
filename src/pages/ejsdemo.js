@@ -1,4 +1,4 @@
-import '../style/home.less'
+import '../assets/style/home.less'
 import Test from '../components/ejs/test/index.js'
 
 setTimeout(_=>{
