@@ -165,7 +165,11 @@ module.exports = (env, argv) => {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['@babel/preset-env']
+                            presets: ['@babel/preset-env'],
+                            plugins: [
+                                ["@babel/plugin-proposal-decorators", {"legacy": true}],
+                                ["@babel/plugin-proposal-class-properties", {"loose": true}]
+                            ]
                         }
                     }
                 ]
