@@ -117,6 +117,8 @@ module.exports = (env, argv) => {
         },
         devServer: {
         	open: true,
+			host:'0.0.0.0',
+            useLocalIp:true,
 			// hot:true,
         	port: config.port,
             publicPath: ''
