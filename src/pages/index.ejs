@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%= require('./common/meta.ejs')() %>
+		<%= require('./common/meta.ejs')({htmlWebpackPlugin}) %>
 		<title>index</title>
         <%= require('./common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
@@ -9,8 +9,10 @@
 		<%= require('./common/header.ejs')({cur:0,htmlWebpackPlugin}) %>
 		<video style="height:200px" controls src="${require('../assets/medias/video.mp4')}"></video>
 		<div class="tt"></div>
-        
-        <a href="./test.html">链接到二级页面</a>
+        <%=htmlWebpackPlugin.options.path%><br/>
+        <a href="./test.html">链接到同级页面</a><br/>
+        <a href="./test/test.html">链接到二级页面</a><br/>
+        <a href="./test/test/test.html">链接到三级页面</a><br/>
         
 		<%= require('./common/footer.ejs')({htmlWebpackPlugin}) %>
 	</body>

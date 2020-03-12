@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%= require('../common/meta.ejs')() %>
-		<title>index</title>
+		<%= require('../common/meta.ejs')({htmlWebpackPlugin}) %>
+		<title>test</title>
         <%= require('../common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
 	<body>
 		<%= require('../common/header.ejs')({cur:null,htmlWebpackPlugin}) %>
 	
-        ${htmlWebpackPlugin.options.path}
+        1、${htmlWebpackPlugin.options.path}<br/>
+				2、${htmlWebpackPlugin.path}<br/>
+				3、<%=htmlWebpackPlugin.options.path%><br/>
+				4、<%=htmlWebpackPlugin.path%><br/>
         我是二级页面
         
 		<%= require('../common/footer.ejs')({htmlWebpackPlugin}) %>

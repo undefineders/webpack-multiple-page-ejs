@@ -12,45 +12,39 @@ const {
 } = require('clean-webpack-plugin');
 var config = require('./config');
 
-// 遍历获取src目录下的启动js模块文件
-const glob = require('glob');
-const PAGE_PATH = path.resolve(__dirname, `${config.path.entry}`)
-// console.log(PAGE_PATH)
-var rFiles = glob.sync(PAGE_PATH + '/**/*.js');
+// // 遍历获取src目录下的启动js模块文件
+// const glob = require('glob');
+// const PAGE_PATH = path.resolve(__dirname, `${config.path.entry}`)
+// // console.log(PAGE_PATH)
+// var rFiles = glob.sync(PAGE_PATH + '/**/*.js');
 // console.log(entryFiles)
-// var join = require('path').join;
-// var rFiles = [];
-// function getJsonFiles(jsonPath){
-//     function findJsonFile(path){
-//         let files = fs.readdirSync(path);
-//         files.forEach(function (item, index) {
-//             let fPath = join(path,item);
-//             let stat = fs.statSync(fPath);
-//             if(stat.isDirectory() === true && item !="common") {
-//                 findJsonFile(fPath);
-//             }
-//             if (stat.isFile() === true && item.endsWith('.js')) { 
-//               rFiles.push(fPath.replace(/\\/g,'/'));
-//             }
-//         });
-//     }
-//     findJsonFile(jsonPath);
-// }
-// getJsonFiles(`./${config.path.entry}`)
+var join = require('path').join;
+var rFiles2 = [];
+function getJsonFiles(jsonPath){
+    function findJsonFile(path){
+        let files = fs.readdirSync(path);
+        files.forEach(function (item, index) {
+            let fPath = join(path,item);
+            let stat = fs.statSync(fPath);
+            if(stat.isDirectory() === true && item !="common") {
+                findJsonFile(fPath);
+            }
+            if (stat.isFile() === true && item.endsWith('.js')) { 
+							let path = fPath.replace(/\\/g,'/')
+							path = path.substring('src/pages/'.length,path.lastIndexOf('.'))
+              rFiles2.push(path);
+            }
+        });
+    }
+    findJsonFile(jsonPath);
+}
+getJsonFiles(`./${config.path.entry}`)
+
+console.log('rFiles2:::',rFiles2)
 
 var entryList = {
 	common:`@src/assets/script/common.js`
 }
-var jsFiles = []
-rFiles.map((v, k) => {
-	var path = v.substring(v.lastIndexOf(`${config.path.entry}`)+`${config.path.entry}`.length+1, v.lastIndexOf('.'))
-	v = v.substring(v.lastIndexOf('/')+1, v.lastIndexOf('.'))
-    entryList[v] = `@${config.path.entry}/${path}.js`
-	jsFiles.push({'filename':v,'template':`${path}`})
-});
-
-console.log(entryList)
-console.log(jsFiles)
 
 module.exports = (env, argv) => {
     process.env.NODE_ENV = argv.mode
@@ -60,15 +54,24 @@ module.exports = (env, argv) => {
     var devPlugins = [];
     var prodPlugins = [];
     
-    jsFiles.forEach(item => {
+    rFiles2.forEach(item => {
+			var size = item.split('/').length-1
+			var path2 = ['./']
+			for(var i = 0 ; i < size;i++){
+				path2.push('../')
+			}
+			var name = item.substring(item.lastIndexOf('/')+1, item.lastIndexOf('.'))
+			entryList[item] = path.resolve(__dirname, `${config.path.entry}`, `${item}.js`)
+			// console.log('path:::::',size,path2)
     	htmlPlugins.push(
     		new HtmlWebpackPlugin({
-    			filename: path.resolve(__dirname, `${config.path.out}`, `${item.filename}.html`),
-    			template: path.resolve(__dirname, `${config.path.entry}`, `${item.template}.ejs`),
+    			filename: path.resolve(__dirname, `${config.path.out}`, `${item}.html`),
+    			template: path.resolve(__dirname, `${config.path.entry}`, `${item}.ejs`),
                 //是否插入生成好的chunks body | head | true | false
     			inject: process.env.NODE_ENV != 'production',
                 //指定该html引入的chunks 
-    			chunks: ['common',`${item.filename}`],
+    			chunks: ['common',`${item}`],
+					path:path2.join(''),
     			//favicon: './src/assets/img/favicon.ico',
     			//压缩配置
     			minify: process.env.NODE_ENV == 'production'?{

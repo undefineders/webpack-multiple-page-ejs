@@ -3,11 +3,11 @@ module.exports = {
     path:{
         entry:'src/pages',
         out:'dist',
-    	css:'.',
-    	img:'.',
-    	js:'.',
-    	fonts:'.',
-    	other:'.'
+    	css:'./assets/css',
+    	img:'./assets/images',
+    	js:'./assets/js',
+    	fonts:'./assets/fonts',
+    	other:'./assets/other'
     	// css:'css',
     	// img:'img',
     	// js:'js',
