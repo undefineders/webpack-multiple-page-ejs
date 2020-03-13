@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%= require('./common/meta.ejs')({htmlWebpackPlugin}) %>
+		<%= require('@/pages/common/meta.ejs')({htmlWebpackPlugin}) %>
 		<title>index</title>
-        <%= require('./common/style.ejs')({htmlWebpackPlugin,compilation}) %>
+        <%= require('@/pages/common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
 	<body>
-		<%= require('./common/header.ejs')({cur:0,htmlWebpackPlugin}) %>
-		<video style="height:200px" controls src="${require('../assets/medias/video.mp4')}"></video>
+		<%= require('@/pages/common/header.ejs')({cur:0,htmlWebpackPlugin}) %>
+		<video style="height:200px" controls src="${require('@/assets/medias/video.mp4')}"></video>
 		<div class="tt"></div>
         <%=htmlWebpackPlugin.options.path%><br/>
         <a href="./test.html">链接到同级页面</a><br/>
         <a href="./test/test.html">链接到二级页面</a><br/>
         <a href="./test/test/test.html">链接到三级页面</a><br/>
         
-		<%= require('./common/footer.ejs')({htmlWebpackPlugin}) %>
+		<%= require('@/pages/common/footer.ejs')({htmlWebpackPlugin}) %>
 	</body>
     
-    <%= require('./common/js.ejs')({htmlWebpackPlugin,compilation}) %>
+    <%= require('@/pages/common/js.ejs')({htmlWebpackPlugin,compilation}) %>
 </html>

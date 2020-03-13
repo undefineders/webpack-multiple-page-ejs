@@ -1,5 +1,5 @@
-import '../assets/style/home.less'
-import Test from '../components/ejs/test/index.js'
+import '@/assets/css/home.less'
+import Test from '@/components/ejs/test/index.js'
 
 setTimeout(_=>{
     var list = []

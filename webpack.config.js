@@ -40,10 +40,10 @@ function getJsonFiles(jsonPath){
 }
 getJsonFiles(`./${config.path.entry}`)
 
-console.log('rFiles2:::',rFiles2)
+// console.log('rFiles2:::',rFiles2)
 
 var entryList = {
-	common:`@src/assets/script/common.js`
+	common:`@src/assets/js/common.js`
 }
 
 module.exports = (env, argv) => {
@@ -128,10 +128,11 @@ module.exports = (env, argv) => {
         },
         watch: process.env.NODE_ENV == 'development',
         resolve: {
-            extensions: ['.js', '.ejs', '.vue', '.json'],
+            //在导入语句没带文件后缀时，Webpack 会自动带上后缀后去尝试访问文件是否存在。（也就是说import 引入的文件后缀可以省略)
+            extensions: ['.js', '.ejs', '.vue', '.json', '.css', '.less'],
             //重命名功能
         	alias: {
-        		'@': path.resolve(__dirname, '.'),
+        		'@': path.resolve(__dirname, 'src'),
         		'@src': path.resolve(__dirname, '.', 'src'),
                 'vue': 'vue/dist/vue.js'
         	}

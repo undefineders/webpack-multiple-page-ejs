@@ -2,17 +2,15 @@
 <html>
 	<head>
 		<%= require('@/pages/common/meta.ejs')({htmlWebpackPlugin}) %>
-		<title>ejsdemo</title>
+		<title>vuedemo</title>
         <%= require('@/pages/common/style.ejs')({htmlWebpackPlugin,compilation}) %>
 	</head>
 	<body>
-		<%= require('@/pages/common/header.ejs')({cur:1,htmlWebpackPlugin}) %>
-            
-        页面直接引入：
-        <%= require('@/components/ejs/test/index.ejs')({list:[1,2,3]}) %>
-            
-        通过脚本引入
-        <div id="test"></div>
+		<%= require('@/pages/common/header.ejs')({cur:2,htmlWebpackPlugin}) %>
+        <div id="app">
+            <div v-for="item in list">{{item}}</div>
+            <my-img></my-img>
+        </div>
         
 		<%= require('@/pages/common/footer.ejs')({htmlWebpackPlugin}) %>
 	</body>

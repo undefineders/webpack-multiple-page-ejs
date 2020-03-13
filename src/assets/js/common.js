@@ -1,4 +1,4 @@
-import '../style/common.less'
+import '@/assets/css/common.less'
 
 console.log('common.js')
 
